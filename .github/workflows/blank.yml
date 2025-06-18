@@ -1,0 +1,29 @@
+name: vps-multiple
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get multiple VPS links
+        run: |
+          > vps-links.txt
+          for i in {1..5}; do
+            echo "Getting link #$i..."
+            OUTPUT=$(curl -sSf https://sshx.io/get | sh -s run | tee /dev/tty)
+            echo "$OUTPUT" | grep -Eo 'https://sshx\.io/\S+' >> vps-links.txt
+            echo "" >> vps-links.txt
+            sleep 2
+          done
+
+      - name: Upload all links
+        uses: actions/upload-artifact@v4
+        with:
+          name: vps-links
+          path: vps-links.txt
