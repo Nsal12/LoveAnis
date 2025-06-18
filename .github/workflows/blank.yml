@@ -15,11 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run VPS 1 by 1 with delay
+      - name: Run 3 VPS instances and get links
         run: |
           for i in 1 2 3; do
             echo "Starting VPS $i..."
-            curl -sSf https://sshx.io/get | sh -s run | tee vps_$i.log
-            echo "VPS $i started. Sleeping 5 seconds..."
-            sleep 5
+            curl -sSf https://sshx.io/get | sh -s run &
           done
+          wait
