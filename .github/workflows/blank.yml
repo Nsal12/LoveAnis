@@ -15,25 +15,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Start SSHX and keep alive
+      - name: Start multiple SSHX sessions and save links
         run: |
           mkdir -p output
-          
-          # Jalankan SSHX dan ambil link
-          curl -sSf https://sshx.io/get | sh -s run | tee sshx_output.txt
+          > output/sshx_links.txt
 
-          # Ekstrak link-nya saja
-          grep '➜  Link:' sshx_output.txt > output/sshx_links.txt
+          echo "Generating SSHX links..."
 
-          # Tetap hidup (menjaga container tetap jalan)
+          for i in {1..3}; do
+            echo "Session $i:" >> output/sshx_links.txt
+            curl -sSf https://sshx.io/get | sh -s run | tee sshx_output_$i.txt
+            grep '➜  Link:' sshx_output_$i.txt >> output/sshx_links.txt
+            echo "" >> output/sshx_links.txt
+            echo "----------------------------------------" >> output/sshx_links.txt
+            echo "" >> output/sshx_links.txt
+            sleep 2
+          done
+
+          echo "All SSHX links saved to output/sshx_links.txt"
+
+          # Keep the runner alive (so VPS stays up)
           nohup tail -f /dev/null &
 
-          echo "SSHX running. VPS is alive."
-
-      - name: Commit SSHX link
+      - name: Commit SSHX links
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add output/sshx_links.txt
-          git commit -m "Add SSHX link"
+          git commit -m "Add multiple SSHX links"
           git push
