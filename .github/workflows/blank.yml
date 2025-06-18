@@ -15,37 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y screen
+      - name: Run VPS instance 1
+        run: curl -sSf https://sshx.io/get | sh -s run
 
-      - name: Generate multiple SSHX links and keep them alive
-        run: |
-          mkdir -p output
-          > output/sshx_links.txt
+      - name: Run VPS instance 2
+        run: curl -sSf https://sshx.io/get | sh -s run
 
-          for i in {1..3}; do
-            screen -dmS sshx_$i bash -c 'curl -sSf https://sshx.io/get | sh -s run > sshx_output_$i.txt && tail -f /dev/null'
-            sleep 5
-          done
-
-          sleep 20  # Tunggu semua session jalan dan menghasilkan link
-
-          for i in {1..3}; do
-            echo "Session $i:" >> output/sshx_links.txt
-            grep "➜  Link:" sshx_output_$i.txt >> output/sshx_links.txt || echo "Link not found" >> output/sshx_links.txt
-            echo "" >> output/sshx_links.txt
-            echo "------------------------------------" >> output/sshx_links.txt
-            echo "" >> output/sshx_links.txt
-          done
-
-          cat output/sshx_links.txt
-
-      - name: Commit SSHX links
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add output/sshx_links.txt
-          git commit -m "Add persistent SSHX links"
-          git push
+      - name: Run VPS instance 3
+        run: curl -sSf https://sshx.io/get | sh -s run
