@@ -15,29 +15,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y screen
-
-      - name: Generate multiple SSHX links
+      - name: Start SSHX and keep alive
         run: |
           mkdir -p output
-          > output/sshx_links.txt
+          
+          # Jalankan SSHX dan ambil link
+          curl -sSf https://sshx.io/get | sh -s run | tee sshx_output.txt
 
-          for i in {1..3}; do
-            screen -dmS sshx_$i bash -c 'curl -sSf https://sshx.io/get | sh -s run | tee -a output/sshx_links.txt'
-            sleep 5
-          done
+          # Ekstrak link-nya saja
+          grep '➜  Link:' sshx_output.txt > output/sshx_links.txt
 
-          sleep 20  # Tunggu semua sesi selesai
-          cat output/sshx_links.txt
+          # Tetap hidup (menjaga container tetap jalan)
+          nohup tail -f /dev/null &
 
-      - name: Commit SSHX links
+          echo "SSHX running. VPS is alive."
+
+      - name: Commit SSHX link
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-
           git add output/sshx_links.txt
-          git commit -m "Add generated SSHX links"
+          git commit -m "Add SSHX link"
           git push
