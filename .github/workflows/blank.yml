@@ -15,26 +15,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Start multiple SSHX sessions and save links
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y screen
+
+      - name: Generate and run multiple SSHX sessions
         run: |
           mkdir -p output
           > output/sshx_links.txt
 
-          echo "Generating SSHX links..."
+          echo "Generating and running multiple SSHX sessions..."
 
           for i in {1..3}; do
+            screen -dmS sshx_$i bash -c 'curl -sSf https://sshx.io/get | sh -s run > sshx_output_$i.txt'
+            sleep 5
+          done
+
+          # Tunggu sebentar agar semua session menghasilkan link
+          sleep 20
+
+          # Ambil semua link dari output
+          for i in {1..3}; do
             echo "Session $i:" >> output/sshx_links.txt
-            curl -sSf https://sshx.io/get | sh -s run | tee sshx_output_$i.txt
-            grep '➜  Link:' sshx_output_$i.txt >> output/sshx_links.txt
+            grep "➜  Link:" sshx_output_$i.txt >> output/sshx_links.txt || echo "Link not found" >> output/sshx_links.txt
             echo "" >> output/sshx_links.txt
             echo "----------------------------------------" >> output/sshx_links.txt
             echo "" >> output/sshx_links.txt
-            sleep 2
           done
 
-          echo "All SSHX links saved to output/sshx_links.txt"
+          echo "All SSHX sessions running in background."
+          echo "Links saved to output/sshx_links.txt"
 
-          # Keep the runner alive (so VPS stays up)
+          # Keep the runner alive
           nohup tail -f /dev/null &
 
       - name: Commit SSHX links
@@ -42,5 +55,5 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add output/sshx_links.txt
-          git commit -m "Add multiple SSHX links"
+          git commit -m "Add multiple running SSHX links"
           git push
