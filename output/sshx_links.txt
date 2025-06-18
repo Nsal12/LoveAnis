@@ -1,0 +1,33 @@
+[0m[35;1m↯ Downloading sshx from [4mhttps://s3.amazonaws.com/sshx/sshx-x86_64-unknown-linux-musl.tar.gz[0m
+
+[0m[35;1m↯ Adding sshx binary to [4m/tmp/tmp.JGlnGOFk4s[0m
+
+[0m[35;1m↯ Done! You can now run sshx.[0m
+
+  [1;32msshx[0m [32mv0.4.1[0m
+
+  [32m➜[0m  Link:  [4;36mhttps://sshx.io/s/uBNWKRJ1de#NcXIZav1iXDSmh[0m
+  [32m➜[0m  Shell: [38;5;8m/bin/sh[0m
+
+[0m[35;1m↯ Downloading sshx from [4mhttps://s3.amazonaws.com/sshx/sshx-x86_64-unknown-linux-musl.tar.gz[0m
+
+[0m[35;1m↯ Adding sshx binary to [4m/tmp/tmp.CyIj9c2nqo[0m
+
+[0m[35;1m↯ Done! You can now run sshx.[0m
+
+  [1;32msshx[0m [32mv0.4.1[0m
+
+  [32m➜[0m  Link:  [4;36mhttps://sshx.io/s/D0Uobg5Qzt#7x4MZOD5mytRH0[0m
+  [32m➜[0m  Shell: [38;5;8m/bin/sh[0m
+
+[0m[35;1m↯ Downloading sshx from [4mhttps://s3.amazonaws.com/sshx/sshx-x86_64-unknown-linux-musl.tar.gz[0m
+
+[0m[35;1m↯ Adding sshx binary to [4m/tmp/tmp.vdGFJjaPJt[0m
+
+[0m[35;1m↯ Done! You can now run sshx.[0m
+
+  [1;32msshx[0m [32mv0.4.1[0m
+
+  [32m➜[0m  Link:  [4;36mhttps://sshx.io/s/fd1mCMsU34#s3caAddWPDdLTX[0m
+  [32m➜[0m  Shell: [38;5;8m/bin/sh[0m
+
