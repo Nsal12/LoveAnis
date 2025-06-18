@@ -15,11 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run VPS instance 1
-        run: curl -sSf https://sshx.io/get | sh -s run
-
-      - name: Run VPS instance 2
-        run: curl -sSf https://sshx.io/get | sh -s run
-
-      - name: Run VPS instance 3
-        run: curl -sSf https://sshx.io/get | sh -s run
+      - name: Run 3 VPS instances and get links
+        run: |
+          for i in 1 2 3; do
+            echo "Starting VPS $i..."
+            curl -sSf https://sshx.io/get | sh -s run &
+          done
+          wait
